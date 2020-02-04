@@ -1910,6 +1910,7 @@ int main(int argc, char **argv) {
 ''', 'false', assert_returncode=None)
 
   def test_em_asm(self):
+    self.set_setting('STRICT')
     self.do_run_in_out_file_test('tests', 'core', 'test_em_asm')
     self.do_run_in_out_file_test('tests', 'core', 'test_em_asm', force_c=True)
 

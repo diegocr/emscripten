@@ -4819,12 +4819,12 @@ LibraryManager.library = {
   llvm_dbg_value: true,
   llvm_debugtrap: true,
   llvm_ctlz_i32: true,
-  emscripten_asm_const: true,
-  emscripten_asm_const_int: true,
-  emscripten_asm_const_double: true,
-  emscripten_asm_const_int_sync_on_main_thread: true,
-  emscripten_asm_const_double_sync_on_main_thread: true,
-  emscripten_asm_const_async_on_main_thread: true,
+  emscripten_asm_const: function() {},
+  emscripten_asm_const_int: function() {},
+  emscripten_asm_const_double: function() {},
+  emscripten_asm_const_int_sync_on_main_thread: function() {},
+  emscripten_asm_const_double_sync_on_main_thread: function() {},
+  emscripten_asm_const_async_on_main_thread: function() {},
 
   // ======== compiled code from system/lib/compiler-rt , see readme therein
   __muldsi3__asm: true,

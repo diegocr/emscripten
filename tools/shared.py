@@ -1881,7 +1881,7 @@ class Building(object):
     return target
 
   @staticmethod
-  def link_lld(args, target, opts=[], lto_level=0):
+  def link_lld(args, target, opts=[], lto_level=0, all_external_symbols=[]):
     if not os.path.exists(WASM_LD):
       exit_with_error('linker binary not found in LLVM directory: %s', WASM_LD)
     # runs lld to link things.
@@ -1903,9 +1903,16 @@ class Building(object):
         WASM_LD,
         '-o',
         target,
-        '--allow-undefined',
         '--lto-O%d' % lto_level,
     ] + args
+
+    if all_external_symbols:
+      undefs = configuration.get_temp_files().get('.undefined').name
+      with open(undefs, 'w') as f:
+        f.write('\n'.join(all_external_symbols))
+      cmd.append('--allow-undefined-file=%s' % undefs)
+    else:
+      cmd.append('--allow-undefined')
 
     # wasi does not import the memory (but for JS it is efficient to do so,
     # as it allows us to set up memory, preload files, etc. even before the
@@ -2314,7 +2321,7 @@ class Building(object):
     if len(internalize_list) > 8192:
       logger.debug('using response file for EXPORTED_FUNCTIONS in internalize')
       finalized_exports = '\n'.join([exp[1:] for exp in exps])
-      internalize_list_file = configuration.get_temp_files().get(suffix='.response').name
+      internalize_list_file = configuration.get_temp_files().get('.response').name
       with open(internalize_list_file, 'w') as f:
         f.write(finalized_exports)
       internalize_public_api += 'file=' + internalize_list_file
