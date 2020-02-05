@@ -1952,9 +1952,9 @@ class Building(object):
 
       cmd += ['--export', '__data_end']
 
-      c_exports = [f for f in Settings.EXPORTED_FUNCTIONS if is_c_symbol(f)]
+      c_exports = [e for e in Settings.EXPORTED_FUNCTIONS if is_c_symbol(e)]
       # Strip the leading underscores
-      c_exports = [demangle_c_symbol_name(f) for f in c_exports]
+      c_exports = [demangle_c_symbol_name(e) for e in c_exports]
       for export in c_exports:
         if export not in all_external_symbols:
           cmd += ['--export', export]
