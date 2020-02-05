@@ -1885,7 +1885,7 @@ class Building(object):
     return target
 
   @staticmethod
-  def link_lld(args, target, opts=[], lto_level=0, all_external_symbols=[]):
+  def link_lld(args, target, opts=[], lto_level=0, all_external_symbols=None):
     if not os.path.exists(WASM_LD):
       exit_with_error('linker binary not found in LLVM directory: %s', WASM_LD)
     # runs lld to link things.
@@ -1955,9 +1955,11 @@ class Building(object):
       c_exports = [e for e in Settings.EXPORTED_FUNCTIONS if is_c_symbol(e)]
       # Strip the leading underscores
       c_exports = [demangle_c_symbol_name(e) for e in c_exports]
+      if all_external_symbols:
+        # Filter out symbols external/JS symbols
+        c_exports = [e for e in c_exports if e not in all_external_symbols]
       for export in c_exports:
-        if export not in all_external_symbols:
-          cmd += ['--export', export]
+        cmd += ['--export', export]
 
     if Settings.RELOCATABLE:
       if Settings.SIDE_MODULE:
