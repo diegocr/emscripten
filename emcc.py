@@ -534,9 +534,12 @@ def get_all_js_library_funcs(temp_files):
     library_fns = forwarded_json['Functions']['libraryFunctions']
     library_fns_list = []
     for name in library_fns:
-      if name[0] == '_':
-        name = name[1:]
+      if shared.is_c_symbol(name):
+        name = shared.demangle_c_symbol_name(name)
         library_fns_list.append(name)
+        # TODO(sbc): wasm-ld shouldn't be reporting errors for symbols
+        # such as __wasi_fd_write which are defined with import_name attibutes
+        # but it currently does.  Remove this once we fix wasm-ld.
         library_fns_list.append('__wasi_' + name)
   finally:
     shared.Settings.INCLUDE_FULL_LIBRARY = old_full

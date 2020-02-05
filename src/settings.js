@@ -910,7 +910,6 @@ var LINKABLE = 0;
 //   * STRICT_JS is enabled.
 //   * AUTO_JS_LIBRARIES is disabled.
 //   * AUTO_ARCHIVE_INDEXES is disabled.
-//   * LLD_REPORT_UNDEFINED is enabled.
 // [compile+link]
 var STRICT = 0;
 
