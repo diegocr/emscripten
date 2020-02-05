@@ -514,9 +514,9 @@ def ensure_archive_index(archive_file):
 
 def get_all_js_library_funcs(temp_files):
   # Runs the js compiler to generate a list of all functions available in the JS
-  # libraries.  This must be done sepraetly for each linker invokation since the
+  # libraries.  This must be done separately for each linker invokation since the
   # list of library functions depends on what settings are used.
-  # TODO(sbc): Find a way to optmize this.  Potenally we could add a super-set
+  # TODO(sbc): Find a way to optimize this.  Potentially we could add a super-set
   # mode of the js compiler that would generate a list of all possible symbols
   # that could be checked in.
   old_full = shared.Settings.INCLUDE_FULL_LIBRARY
@@ -1178,7 +1178,6 @@ There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR P
 
     if shared.Settings.STRICT:
       shared.Settings.STRICT_JS = 1
-      shared.Settings.LLD_REPORT_UNDEFINED = 1
       shared.Settings.AUTO_JS_LIBRARIES = 0
       shared.Settings.AUTO_ARCHIVE_INDEXES = 0
 
