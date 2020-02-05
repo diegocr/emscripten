@@ -2242,11 +2242,14 @@ There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR P
             lto_level = options.opt_level
           else:
             lto_level = 0
-          all_js_funcs = None
+          all_externals = None
           if shared.Settings.LLD_REPORT_UNDEFINED:
-            all_js_funcs = get_all_js_library_funcs(misc_temp_files)
+            all_externals = get_all_js_library_funcs(misc_temp_files)
             log_time('JS symbol generation')
-          final = shared.Building.link_lld(linker_inputs, DEFAULT_FINAL, lto_level=lto_level, all_external_symbols=all_js_funcs)
+            # TODO(sbc): This is an incomplete list of __invoke functions.  Perhaps add
+            # support for wildcard to wasm-ld.
+            all_externals += ['emscripten_longjmp_jmpbuf', '__invoke_void', '__invoke_i32_i8*_...']
+          final = shared.Building.link_lld(linker_inputs, DEFAULT_FINAL, lto_level=lto_level, all_external_symbols=all_externals)
         else:
           final = shared.Building.link(linker_inputs, DEFAULT_FINAL, force_archive_contents=force_archive_contents, just_calculate=just_calculate)
       else:

@@ -1447,6 +1447,10 @@ def demangle_c_symbol_name(name):
   return name[1:] if name.startswith('_') else '$' + name
 
 
+def is_c_symbol(name):
+  return name.startswith('_')
+
+
 def treat_as_user_function(name):
   if name.startswith('dynCall_'):
     return False
@@ -1948,8 +1952,12 @@ class Building(object):
 
       cmd += ['--export', '__data_end']
 
-      for export in Settings.EXPORTED_FUNCTIONS:
-        cmd += ['--export', export[1:]] # Strip the leading underscore
+      c_exports = [f for f in Settings.EXPORTED_FUNCTIONS if is_c_symbol(f)]
+      # Strip the leading underscores
+      c_exports = [demangle_c_symbol_name(f) for f in c_exports]
+      for export in c_exports:
+        if export not in all_external_symbols:
+          cmd += ['--export', export]
 
     if Settings.RELOCATABLE:
       if Settings.SIDE_MODULE:
